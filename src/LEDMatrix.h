@@ -1,3 +1,6 @@
+#ifndef LEDMatrix_h
+#define LEDMatrix_h
+
 #include "Point.h"
 
 #define MATRIX_LENGTH 32
@@ -25,3 +28,5 @@ class LEDMatrix {
         bool getShownPixel(Point p);
         void finishFrame();
 };
+
+#endif
