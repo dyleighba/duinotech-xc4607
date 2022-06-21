@@ -29,7 +29,9 @@ void LEDMatrix::finishFrame() {
 }
 
 bool inBounds(Point p) {
-
+    return
+        p.x < MATRIX_WIDTH && p.y < MATRIX_WIDTH &&
+        p.x >= 0 && p.y >= 0;
 }
 
 void writeDisplayRow(byte row) {
