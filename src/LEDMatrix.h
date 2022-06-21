@@ -19,6 +19,9 @@ struct LEDMatrix_PinSetup {
     byte d;      // D
 };
 
+
+LEDMatrix matrixInterruptTarget;
+
 class LEDMatrix {
     public:
         LEDMatrix(LEDMatrix_PinSetup pinSetup);
@@ -26,6 +29,8 @@ class LEDMatrix {
         bool getPixel(Point p);
         bool getShownPixel(Point p);
         void finishFrame();
+        void clearFrame();
+        static void hardwareInterrupt();
     private:
         LEDMatrix_PinSetup pins;
         byte *buffer;
@@ -33,8 +38,7 @@ class LEDMatrix {
         bool bufferSwapQueued;
         byte currentDisplayRow;
         bool inBounds(Point p);
-        void writeDisplayRow(byte row);
-        void writeDisplayInterrupt();
+        void writeMatrixRow();
 };
 
 #endif
