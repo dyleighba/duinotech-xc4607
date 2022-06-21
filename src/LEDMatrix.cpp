@@ -27,3 +27,15 @@ bool LEDMatrix::getShownPixel(Point p) {
 void LEDMatrix::finishFrame() {
 
 }
+
+bool inBounds(Point p) {
+
+}
+
+void writeDisplayRow(char row) {
+    
+}
+
+void writeDisplayInterrupt() {
+
+}
