@@ -2,10 +2,10 @@
 #define Rect_h
 
 struct Rect {
-    char x;
-    char y;
-    char width;
-    char height;
+    byte x;
+    byte y;
+    byte width;
+    byte height;
 };
 
 #endif

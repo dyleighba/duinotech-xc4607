@@ -32,8 +32,8 @@ bool inBounds(Point p) {
 
 }
 
-void writeDisplayRow(char row) {
-    
+void writeDisplayRow(byte row) {
+
 }
 
 void writeDisplayInterrupt() {

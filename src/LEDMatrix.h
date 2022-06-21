@@ -9,14 +9,14 @@
 #define BUFFER_SIZE MATRIX_WIDTH*2
 
 struct LEDMatrix_PinSetup {
-    char latch;  // LAT
-    char clock;  // CLK
-    char data;   // DI
-    char enable; // G
-    char a;      // A
-    char b;      // B
-    char c;      // C
-    char d;      // D
+    byte latch;  // LAT
+    byte clock;  // CLK
+    byte data;   // DI
+    byte enable; // G
+    byte a;      // A
+    byte b;      // B
+    byte c;      // C
+    byte d;      // D
 };
 
 class LEDMatrix {
@@ -28,12 +28,12 @@ class LEDMatrix {
         void finishFrame();
     private:
         LEDMatrix_PinSetup pins;
-        char *buffer;
-        char activeBuffer;
+        byte *buffer;
+        byte activeBuffer;
         bool bufferSwapQueued;
-        char currentDisplayRow;
+        byte currentDisplayRow;
         bool inBounds(Point p);
-        void writeDisplayRow(char row);
+        void writeDisplayRow(byte row);
         void writeDisplayInterrupt();
 };
 

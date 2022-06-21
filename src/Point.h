@@ -2,8 +2,8 @@
 #define Point_h
 
 struct Point {
-    char x;
-    char y;
+    byte x;
+    byte y;
 };
 
 #endif
