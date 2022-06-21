@@ -24,7 +24,7 @@ class LEDMatrix {
     public:
         LEDMatrix(LEDMatrix_PinSetup pinSetup);
         void setPixel(Point p, bool state);
-        bool getPixel(Point p, bool state);
+        bool getPixel(Point p);
         bool getShownPixel(Point p);
         void finishFrame();
 };
