@@ -12,23 +12,56 @@
 namespace LEDMatrix {
     typedef byte byterow[2];
 
-    const PinSetup pins;
+    static PinSetup pins;
+    static BufferedFrame bufferedFrame;
     
-    BufferedFrame bufferedFrame;
     bool bufferSwapQueued;
     byte currentRow;
 
     void init(PinSetup pinSetup) {
+        pins = pinSetup;
+        pinMode(pins.latch, OUTPUT);
+        pinMode(pins.clock, OUTPUT);
+        pinMode(pins.data, OUTPUT);
+        pinMode(pins.enable, OUTPUT);
+        pinMode(pins.a, OUTPUT);
+        pinMode(pins.b, OUTPUT);
+        pinMode(pins.c, OUTPUT);
+        pinMode(pins.d, OUTPUT);
+        digitalWrite(pins.latch, HIGH);
         Timer1.initialize(1000);
         Timer1.attachInterrupt(hardwareInterrupt);
     }
 
-    void setPixel(Point p, bool state);
-    bool getPixel(Point p);
-    bool getShownPixel(Point p);
-    void finishFrame();
-    void clearFrame();
-    bool inBounds(Point p);
+    void setPixel(Point p, bool state) {
+        bufferedFrame.setPixel(p, state);
+    }
+
+    bool getPixel(Point p) {
+        return bufferedFrame.getPixel(p);
+        
+    }
+
+    bool getShownPixel(Point p) {
+        return bufferedFrame.getFrontPixel(p);
+    }
+
+    void finishFrame() {
+        bufferSwapQueued = true;
+        while (bufferSwapQueued);
+    }
+    
+    void clearFrame() {
+        for (byte i=0; i<LEDMATRIX_BUFFER_SIZE; i++) {
+            bufferedFrame.backbuffer[i] = 0x0;
+        }
+    }
+
+    bool inBounds(Point p) {
+        return
+            p.x < LEDMATRIX_WIDTH && p.y < LEDMATRIX_WIDTH &&
+            p.x >= 0 && p.y >= 0;
+    }
 
     void bitShiftToMatrix(byterow bytes) {
         digitalWrite(pins.enable, HIGH);
