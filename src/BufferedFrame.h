@@ -1,10 +1,12 @@
 #ifndef BufferedFrame_h
 #define BufferedFrame_h
 
+#define LEDMATRIX_BUFFER_SIZE LEDMATRIX_WIDTH * 2
+
 #include "LEDMatrix.h"
 #include "Point.h"
 
-#define LEDMATRIX_BUFFER_SIZE LEDMATRIX_WIDTH * 2
+
 
 namespace LEDMatrix {
     typedef byte buffer[LEDMATRIX_BUFFER_SIZE];
