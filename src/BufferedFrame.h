@@ -1,15 +1,12 @@
 #ifndef BufferedFrame_h
 #define BufferedFrame_h
 
-#define LEDMATRIX_BUFFER_SIZE LEDMATRIX_WIDTH * 2
-
-#include "LEDMatrix.h"
+#include "Constants.h"
 #include "Point.h"
 
 
 
 namespace LEDMatrix {
-    typedef byte buffer[LEDMATRIX_BUFFER_SIZE];
 
     struct PixelIndex {
         byte byteIndex;
@@ -18,17 +15,52 @@ namespace LEDMatrix {
 
     class BufferedFrame {
         public:
-            BufferedFrame();
-            void setPixel(Point p, bool state);
-            bool getPixel(Point p);
-            bool getFrontPixel(Point p);
-            void swapBuffers();
-            void clearBackbuffer();
-            void pointToPixelIndex(Point p);
-            buffer &backbuffer;
-            buffer &frontbuffer;
+            byte *backbuffer;
+            byte *frontbuffer;
+
+            BufferedFrame() {
+                swapBuffers();
+            };
+
+            void setPixel(Point p, bool state) {
+                PixelIndex index = pointToPixelIndex(p);
+                byte pixelMask = 1 << index.bitIndex;
+                if (state) {
+                    backbuffer[index.byteIndex] = backbuffer[index.byteIndex] | pixelMask;
+                } else if (backbuffer[index.byteIndex] >> index.bitIndex == 1) {
+                    backbuffer[index.byteIndex] = backbuffer[index.byteIndex] ^ pixelMask;
+                }
+            }
+
+            bool getPixel(Point p) {
+                PixelIndex index = pointToPixelIndex(p);
+                return (bool)((backbuffer[index.byteIndex] >> index.bitIndex) & 1);
+            }
+
+            bool getFrontPixel(Point p) {
+                PixelIndex index = pointToPixelIndex(p);
+                return (bool)((frontbuffer[index.byteIndex] >> index.bitIndex) & 1);
+            }
+
+            void swapBuffers() {
+                byte frontBufferIndex = bufferInUse;
+                bufferInUse = (bufferInUse + 1) % 2;
+                backbuffer = bufferBytes+(LEDMATRIX_BUFFER_SIZE * bufferInUse);
+                frontbuffer = bufferBytes+(LEDMATRIX_BUFFER_SIZE * frontBufferIndex);
+            }
+
+            void clearBackbuffer() {
+                for (byte i=0; i<LEDMATRIX_BUFFER_SIZE; i++) {
+                    backbuffer[i] = 0x0;
+                }
+            }
+
+            PixelIndex pointToPixelIndex(Point p) {
+                
+            };
+
         private:
-            byte buffer[LEDMATRIX_BUFFER_SIZE*2];
+            byte bufferBytes[LEDMATRIX_BUFFER_SIZE*2];
             byte bufferInUse;
     };
 };

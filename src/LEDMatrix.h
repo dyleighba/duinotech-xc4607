@@ -1,8 +1,7 @@
 #ifndef LEDMatrix_h
 #define LEDMatrix_h
 
-#define LEDMATRIX_WIDTH 16
-
+#include "Constants.h"
 #include "BufferedFrame.h"
 #include "PinSetup.h"
 #include "Point.h"
@@ -12,26 +11,11 @@
 namespace LEDMatrix {
     typedef byte byterow[2];
 
-    static PinSetup pins;
-    static BufferedFrame bufferedFrame;
+    PinSetup pins;
+    BufferedFrame bufferedFrame;
     
     bool bufferSwapQueued;
     byte currentRow;
-
-    void init(PinSetup pinSetup) {
-        pins = pinSetup;
-        pinMode(pins.latch, OUTPUT);
-        pinMode(pins.clock, OUTPUT);
-        pinMode(pins.data, OUTPUT);
-        pinMode(pins.enable, OUTPUT);
-        pinMode(pins.a, OUTPUT);
-        pinMode(pins.b, OUTPUT);
-        pinMode(pins.c, OUTPUT);
-        pinMode(pins.d, OUTPUT);
-        digitalWrite(pins.latch, HIGH);
-        Timer1.initialize(1000);
-        Timer1.attachInterrupt(hardwareInterrupt);
-    }
 
     void setPixel(Point p, bool state) {
         bufferedFrame.setPixel(p, state);
@@ -52,9 +36,7 @@ namespace LEDMatrix {
     }
     
     void clearFrame() {
-        for (byte i=0; i<LEDMATRIX_BUFFER_SIZE; i++) {
-            bufferedFrame.backbuffer[i] = 0x0;
-        }
+        bufferedFrame.clearBackbuffer();
     }
 
     bool inBounds(Point p) {
@@ -84,6 +66,21 @@ namespace LEDMatrix {
         byterow row = {bufferedFrame.frontbuffer[index], bufferedFrame.frontbuffer[index+1]};
         bitShiftToMatrix(row);
         currentRow = (currentRow + 1) % LEDMATRIX_WIDTH;
+    }
+
+    void init(PinSetup pinSetup) {
+        pins = pinSetup;
+        pinMode(pins.latch, OUTPUT);
+        pinMode(pins.clock, OUTPUT);
+        pinMode(pins.data, OUTPUT);
+        pinMode(pins.enable, OUTPUT);
+        pinMode(pins.a, OUTPUT);
+        pinMode(pins.b, OUTPUT);
+        pinMode(pins.c, OUTPUT);
+        pinMode(pins.d, OUTPUT);
+        digitalWrite(pins.latch, HIGH);
+        Timer1.initialize(1000);
+        Timer1.attachInterrupt(hardwareInterrupt);
     }
 }
 
