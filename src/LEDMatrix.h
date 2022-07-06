@@ -60,6 +60,7 @@ namespace LEDMatrix {
     void hardwareInterrupt() {
         if (currentRow == 0 && bufferSwapQueued) {
             bufferedFrame.swapBuffers();
+            bufferSwapQueued = false;
         }
         byte index = currentRow*2;
         byterow row = {bufferedFrame.frontbuffer[index], bufferedFrame.frontbuffer[index+1]};
