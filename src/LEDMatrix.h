@@ -32,7 +32,6 @@ namespace LEDMatrix {
 
     void finishFrame() {
         bufferSwapQueued = true;
-        while (bufferSwapQueued);
     }
     
     void clearFrame() {
