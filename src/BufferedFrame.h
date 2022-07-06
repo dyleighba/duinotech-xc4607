@@ -56,7 +56,10 @@ namespace LEDMatrix {
             }
 
             PixelIndex pointToPixelIndex(Point p) {
-                
+                PixelIndex pi;
+                pi.bitIndex = p.x % 8;
+                pi.byteIndex = ( p.y*2 ) + ( pi.bitIndex > 0.5 );
+                return pi;
             };
 
         private:
