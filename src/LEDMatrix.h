@@ -51,8 +51,8 @@ namespace LEDMatrix {
         digitalWrite(pins.c, (currentRow >> 2) & 1);
         digitalWrite(pins.d, (currentRow >> 3) & 1);
         digitalWrite(pins.latch, LOW);
-        shiftOut(pins.data, pins.clock, LSBFIRST, bytes[0]);
-        shiftOut(pins.data, pins.clock, LSBFIRST, bytes[1]);
+        shiftOut(pins.data, pins.clock, LSBFIRST, ~bytes[0]);
+        shiftOut(pins.data, pins.clock, LSBFIRST, ~bytes[1]);
         digitalWrite(pins.latch, HIGH);
         digitalWrite(pins.enable, LOW);
     }
