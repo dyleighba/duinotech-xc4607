@@ -25,10 +25,9 @@ namespace LEDMatrix {
             void setPixel(Point p, bool state) {
                 PixelIndex index = pointToPixelIndex(p);
                 byte pixelMask = 1 << index.bitIndex;
+                backbuffer[index.byteIndex] = backbuffer[index.byteIndex] & ~pixelMask;
                 if (state) {
                     backbuffer[index.byteIndex] = backbuffer[index.byteIndex] | pixelMask;
-                } else if (backbuffer[index.byteIndex] >> index.bitIndex == 1) {
-                    backbuffer[index.byteIndex] = backbuffer[index.byteIndex] ^ pixelMask;
                 }
             }
 
