@@ -33,12 +33,12 @@ namespace LEDMatrix {
 
             bool getPixel(Point p) {
                 PixelIndex index = pointToPixelIndex(p);
-                return (bool)((backbuffer[index.byteIndex] >> index.bitIndex) & 1);
+                return ((backbuffer[index.byteIndex] >> index.bitIndex) & 1) > 0;
             }
 
             bool getFrontPixel(Point p) {
                 PixelIndex index = pointToPixelIndex(p);
-                return (bool)((frontbuffer[index.byteIndex] >> index.bitIndex) & 1);
+                return ((frontbuffer[index.byteIndex] >> index.bitIndex) & 1) > 0;
             }
 
             void swapBuffers() {
@@ -57,7 +57,10 @@ namespace LEDMatrix {
             PixelIndex pointToPixelIndex(Point p) {
                 PixelIndex pi;
                 pi.bitIndex = p.x % 8;
-                pi.byteIndex = ( p.y*2 ) + ( p.x > 7 );
+                pi.byteIndex = ( p.y*2 );
+                if (p.x > 7) {
+                    pi.byteIndex = pi.byteIndex + 1;
+                }
                 return pi;
             };
 
